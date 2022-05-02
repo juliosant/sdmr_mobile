@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:sdmr/ciclo_usuarios/tela_login.dart';
 import 'tela_inicial_usuario.dart';
+
+String globalToken = '';
+int  globalIdUser = 0;
 
 void main() {
   runApp(SDMR());
@@ -11,7 +15,8 @@ class SDMR extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       home: SafeArea(
-          child: TelaInicialUsuario()),
+          child: TelaLogin(),//TelaInicialUsuario(),
+      ),
     );
   }
 }

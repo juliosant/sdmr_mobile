@@ -16,8 +16,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from rest_framework.authtoken import views
+from ciclo_usuarios_app.views import obter_token_id_perfil
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('usuarios/', include('ciclo_usuarios_app.urls')),
     path('doacao/', include('ciclo_doacao_app.urls')),
+    path('api-token-auth/', views.obtain_auth_token, name='api-token-auth'),
+    path('obter_token/', obter_token_id_perfil, name='obter_token')
+
 ]

@@ -1,11 +1,14 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:sdmr/ciclo_doacao/ponto_coleta/tela_lista_doacoes_agendadas.dart';
 import 'package:sdmr/ciclo_doacao/ponto_coleta/tela_lista_doacoes_aguardando_conf_ag.dart';
 import 'package:sdmr/constantes/constantes.dart';
 import 'package:sdmr/tela_inicial_usuario.dart';
 import 'package:select_form_field/select_form_field.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+
+import '../../main.dart';
 
 class TelaConfirmarAgendDoacao extends StatefulWidget {
 
@@ -70,7 +73,11 @@ class _TelaConfirmarAgendDoacaoState extends State<TelaConfirmarAgendDoacao> {
     required String des_status_atual_doacao
   }) async{
     http.Response response = await http.get(
-        Uri.parse(kUrlDoacao+'confirmar_doacao/$id'));
+        Uri.parse(kUrlDoacao+'confirmar_doacao/$id'),
+        headers: {
+          HttpHeaders.authorizationHeader: "TOKEN $globalToken",
+        },
+    );
     var data = json.decode(response.body);
 
     print("id " +data['id'].toString());
@@ -86,6 +93,7 @@ class _TelaConfirmarAgendDoacaoState extends State<TelaConfirmarAgendDoacao> {
     response = await http.put(
       Uri.parse(kUrlDoacao+'confirmar_doacao/$id'),
       headers: <String, String>{
+        HttpHeaders.authorizationHeader: "TOKEN $globalToken",
         "Content-Type": "application/json; charset=UTF-8"
       },
 

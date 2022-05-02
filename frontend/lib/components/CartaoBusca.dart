@@ -6,14 +6,14 @@ import 'package:sdmr/modelos/PontoColeta.dart';
 import 'dart:convert';
 
 class CartaoResultadoBusca extends StatelessWidget {
-  final int id;
+  final int cod_beneficiario;
   final String des_nome_instituicao;
   final String des_telefone;
   final String email;
   final String endCompleto;
 
   const CartaoResultadoBusca({
-    required this.id,
+    required this.cod_beneficiario,
     required this.des_nome_instituicao,
     required this.des_telefone,
     required this.email,
@@ -30,7 +30,7 @@ class CartaoResultadoBusca extends StatelessWidget {
           onTap: (){
             Navigator.pushAndRemoveUntil(
                 context, MaterialPageRoute(builder: (context)=>TelaAgendarDoacao(
-                id: id,
+                cod_beneficiario: cod_beneficiario,
                 des_nome_instituicao: des_nome_instituicao,
                 des_telefone: des_telefone,
                 email: email,

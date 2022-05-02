@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 const String kUrlUsuarios = 'http://10.0.2.2:8000/usuarios/';
 const String kUrlDoacao = 'http://10.0.2.2:8000/doacao/';
 const String kUrlCupons = 'http://10.0.2.2:8000/cupons/';
+const String kUrlToken = 'http://10.0.2.2:8000/obter_token/';
 
 const kDesTituloPagina = TextStyle(fontSize: 30.0, color: Colors.teal);
 

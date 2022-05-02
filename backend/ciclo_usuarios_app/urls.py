@@ -13,5 +13,9 @@ urlpatterns = [
    path('nome_doador/<int:pk>', DoadorNomeUpdateDelete.as_view()),
 
    path('pontoColeta/', PontoColetaGetCreate.as_view()),
-   path('pontoColeta/<int:pk>', PontoColetaUpdateDelete.as_view())
+   path('pontoColeta/<int:pk>', PontoColetaUpdateDelete.as_view()),
+
+   path('cadastro_perfil/', PerfilRecordView.as_view(), name='perfil'),
+   path('cadastro_pontoColeta/', PontoColetaRecordView.as_view(), name='cadastro_pontoColeta'),
+   path('cadastro_doador/', DoadorRecordView.as_view(), name='cadastro_doador'),
 ]

@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:sdmr/constantes/constantes.dart';
+import 'package:sdmr/main.dart';
 import 'package:sdmr/modelos/Doacao.dart';
 import 'package:sdmr/components/CartaoAgendamentos.dart';
 import 'package:sdmr/tela_inicial_usuario.dart';
@@ -21,7 +24,12 @@ class _TelaListaDoacoesAguardandoConfAgendState extends State<TelaListaDoacoesAg
 
   void fetch_data() async{
     try{
-      http.Response response = await http.get(Uri.parse(kUrlDoacao+'confirmar_doacao/'));
+      http.Response response = await http.get(Uri.parse(
+          kUrlDoacao+'confirmar_doacao/'),
+          headers: {
+            HttpHeaders.authorizationHeader: "TOKEN $globalToken",
+          }
+      );
       var data = json.decode(response.body);
       data.forEach((agendamento){
         Doacao agendamentosAux = Doacao(
@@ -98,7 +106,7 @@ class _TelaListaDoacoesAguardandoConfAgendState extends State<TelaListaDoacoesAg
             carregando ? Text('Sem agendamentos no momento')
             : Column(
               children: agendamentosAConfirmar.map((e) {
-                if (e.des_status_atual_atendimento == '0' && e.des_status_atual_doacao == '0') {
+                if (e.cod_beneficiario == globalIdUser && e.des_status_atual_atendimento == '0' && e.des_status_atual_doacao == '0') {
                   return CartaoAgendamentos(
                     id: e.id,
                     nome_solicitante: e.nome_solicitante +' '+ e.sobrenome_solicitante,

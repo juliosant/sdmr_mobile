@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:sdmr/ciclo_doacao/ponto_coleta/tela_lista_doacoes_agendadas.dart';
 import 'package:sdmr/constantes/constantes.dart';
@@ -5,6 +7,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'package:sdmr/tela_inicial_usuario.dart';
+
+import '../../main.dart';
 
 Map<String, Card> mapFormulariosMateriais = {};
 List<Widget> listaFormulariosMaterial = [];
@@ -54,7 +58,11 @@ class _TelaAdicionarMateriaisState extends State<TelaAdicionarMateriais> {
 
   void atualizarStatusDoacao() async{
     http.Response response = await http.get(
-        Uri.parse(kUrlDoacao+'confirmar_doacao/$id'));
+        Uri.parse(kUrlDoacao+'confirmar_doacao/$id'),
+        headers: {
+          HttpHeaders.authorizationHeader: "TOKEN $globalToken",
+        },
+    );
     var data = json.decode(response.body);
 
     /*print("id " +data['id'].toString());
@@ -70,6 +78,7 @@ class _TelaAdicionarMateriaisState extends State<TelaAdicionarMateriais> {
     response = await http.put(
       Uri.parse(kUrlDoacao+'confirmar_doacao/$id'),
       headers: <String, String>{
+        HttpHeaders.authorizationHeader: "TOKEN $globalToken",
         "Content-Type": "application/json; charset=UTF-8"
       },
 
@@ -102,7 +111,8 @@ class _TelaAdicionarMateriaisState extends State<TelaAdicionarMateriais> {
     try{
       http.Response response = await http.post(Uri.parse(kUrlDoacao+'material/'),
           headers: <String, String>{
-          "Content-Type": "application/json; charset=UTF-8"
+            HttpHeaders.authorizationHeader: "TOKEN $globalToken",
+            "Content-Type": "application/json; charset=UTF-8"
           },
 
           body: jsonEncode(<String, dynamic>{

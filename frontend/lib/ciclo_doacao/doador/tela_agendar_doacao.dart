@@ -1,22 +1,24 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:sdmr/ciclo_doacao/doador/tela_buscar_ponto_coleta.dart';
+import 'package:sdmr/main.dart';
 import 'package:sdmr/tela_inicial_usuario.dart';
 import '../../constantes/constantes.dart';
 import 'package:http/http.dart' as http;
 import 'package:date_time_picker/date_time_picker.dart';
 
 class TelaAgendarDoacao extends StatefulWidget {
-  final int id;
+  final int cod_beneficiario;
   final String des_nome_instituicao;
   final String des_telefone;
   final String email;
   final String endCompleto;
 
   const TelaAgendarDoacao({
-    required this.id,
+    required this.cod_beneficiario,
     required this.des_nome_instituicao,
     required this.des_telefone,
     required this.email,
@@ -26,7 +28,7 @@ class TelaAgendarDoacao extends StatefulWidget {
 
   @override
   State<TelaAgendarDoacao> createState() => _TelaAgendarDoacaoState(
-      id: id,
+      cod_beneficiario: cod_beneficiario,
       des_nome_instituicao: des_nome_instituicao,
       des_telefone: des_telefone,
       email: email,
@@ -35,21 +37,21 @@ class TelaAgendarDoacao extends StatefulWidget {
 
 class _TelaAgendarDoacaoState extends State<TelaAgendarDoacao> {
 
-  final int id;
+  final int cod_beneficiario;
   final String des_nome_instituicao;
   final String des_telefone;
   final String email;
   final String endCompleto;
 
   _TelaAgendarDoacaoState({
-  required this.id,
+  required this.cod_beneficiario,
   required this.des_nome_instituicao,
   required this.des_telefone,
   required this.email,
   required this.endCompleto,});
 
-  int cod_solictante = 1;
-  int cod_beneficiario  = 0;
+  int cod_solictante = globalIdUser;
+  //int cod_beneficiario  = 0;
   String des_endereco = "";
   String dat_dia = "";
   String des_hora = "";
@@ -73,6 +75,7 @@ class _TelaAgendarDoacaoState extends State<TelaAgendarDoacao> {
       http.Response response = await http.post(
           Uri.parse(kUrlDoacao+'doacao/'),
           headers: <String, String>{
+            HttpHeaders.authorizationHeader: "TOKEN $globalToken",
             "Content-Type": "application/json; charset=UTF-8"
           },
 
@@ -87,7 +90,7 @@ class _TelaAgendarDoacaoState extends State<TelaAgendarDoacao> {
             "tipo_atendimento": false,
             "bool_confirmado_doacao": false,
             "des_status_atual_doacao": des_status_atual_doacao,
-            "cod_solicitante": cod_solictante,
+            "cod_solicitante": globalIdUser,
             "cod_beneficiario": cod_beneficiario
       }),
       );
@@ -116,7 +119,7 @@ class _TelaAgendarDoacaoState extends State<TelaAgendarDoacao> {
 
   @override
   Widget build(BuildContext context) {
-    cod_beneficiario  = id;
+    //cod_beneficiario  = id;
     des_endereco = endCompleto;
 
     return Scaffold(
@@ -264,6 +267,7 @@ class _TelaAgendarDoacaoState extends State<TelaAgendarDoacao> {
               ),
               ElevatedButton(
                 onPressed: (){
+                  //print(globalIdUser);
                   //print("$cod_solictante, $cod_beneficiario $des_endereco, $dat_dia,$des_hora,$des_status_atual_atendimento,$num_pontos_doacao, $des_status_atual_doacao");
                   criarAgendamento(
                       cod_solictante,

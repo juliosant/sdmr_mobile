@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sdmr/ciclo_doacao/doador/tela_lista_doacoes_materiais.dart';
@@ -6,6 +8,8 @@ import 'package:sdmr/tela_inicial_usuario.dart';
 import 'package:select_form_field/select_form_field.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+
+import '../../main.dart';
 
 class TelaConfirmarDoacao extends StatefulWidget {
 
@@ -81,7 +85,11 @@ class _TelaConfirmarDoacaoState extends State<TelaConfirmarDoacao> {
   });
 
   void atualizarPontosDoador({required double pontos}) async{
-    http.Response response = await http.get(Uri.parse(kUrlUsuarios+'doador/$cod_solicitante'));
+    http.Response response = await http.get(Uri.parse(kUrlUsuarios+'doador/$cod_solicitante'),
+      headers: {
+        HttpHeaders.authorizationHeader: "TOKEN $globalToken",
+      }
+    );
     var data = json.decode(response.body);
 
     data['num_pontos_gerais'] += pontos;
@@ -89,6 +97,7 @@ class _TelaConfirmarDoacaoState extends State<TelaConfirmarDoacao> {
     response = await http.put(
       Uri.parse(kUrlUsuarios+'doador/$cod_solicitante'),
       headers: <String, String>{
+        HttpHeaders.authorizationHeader: "TOKEN $globalToken",
         "Content-Type": "application/json; charset=UTF-8"
       },
       body: jsonEncode(<String, dynamic>
@@ -110,7 +119,11 @@ class _TelaConfirmarDoacaoState extends State<TelaConfirmarDoacao> {
     required String des_status_atual_doacao
   }) async{
     http.Response response = await http.get(
-        Uri.parse(kUrlDoacao+'confirmar_doacao/$id'));
+        Uri.parse(kUrlDoacao+'confirmar_doacao/$id'),
+        headers: {
+          HttpHeaders.authorizationHeader: "TOKEN $globalToken",
+        },
+    );
     var data = json.decode(response.body);
 
     print("id " +data['id'].toString());
@@ -126,6 +139,7 @@ class _TelaConfirmarDoacaoState extends State<TelaConfirmarDoacao> {
     response = await http.put(
       Uri.parse(kUrlDoacao+'confirmar_doacao/$id'),
       headers: <String, String>{
+        HttpHeaders.authorizationHeader: "TOKEN $globalToken",
         "Content-Type": "application/json; charset=UTF-8"
       },
 

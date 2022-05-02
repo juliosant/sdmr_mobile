@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -6,6 +8,7 @@ import 'dart:convert';
 import 'package:sdmr/constantes/constantes.dart';
 
 import 'package:sdmr/components/CartaoBusca.dart';
+import 'package:sdmr/main.dart';
 import 'package:sdmr/modelos/PontoColeta.dart';
 import 'package:sdmr/tela_inicial_usuario.dart';
 
@@ -22,8 +25,14 @@ class _TelaBuscarPontoColetaState extends State<TelaBuscarPontoColeta> {
   
   void fetch_data() async{
     try{
-      http.Response response = await http.get(Uri.parse(kUrlUsuarios+'pontoColeta/'));
+      http.Response response = await http.get(
+        Uri.parse(kUrlUsuarios+'pontoColeta/'),
+        headers: {
+          HttpHeaders.authorizationHeader: "TOKEN $globalToken"
+        }
+      );
       var data = json.decode(response.body);
+      print(data);
       data.forEach((pontoColeta){
         PontoColeta pontoColetaAux = PontoColeta(
             /*id: pontoColeta['id'],
@@ -140,7 +149,7 @@ class _TelaBuscarPontoColetaState extends State<TelaBuscarPontoColeta> {
               //crossAxisAlignment: CrossAxisAlignment.start,
               children: pontosColetaEncontrados.map((e){
                 return CartaoResultadoBusca(
-                    id: e.id,
+                  cod_beneficiario: e.id,
                     des_nome_instituicao: e.des_nome_instituicao,
                     des_telefone: e.des_telefone,
                     email: e.email,

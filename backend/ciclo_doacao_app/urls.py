@@ -4,6 +4,7 @@ from .views import * #import AtendimentoGetCreate, AtendimentoUpdateDelete, Doac
 urlpatterns = [
    path('atendimento/', AtendimentoGetCreate.as_view()),
    path('atendimento/<int:pk>', AtendimentoUpdateDelete.as_view()),
+   
 
    path('doacao/', DoacaoGetCreate.as_view()),
    path('doacao/<int:pk>', DoacaoUpdateDelete.as_view()),
