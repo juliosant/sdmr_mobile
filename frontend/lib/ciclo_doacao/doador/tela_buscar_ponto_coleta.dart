@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
+import 'package:sdmr/ciclo_usuarios/doador/tela_inicial_doador.dart';
 import 'dart:convert';
 
 import 'package:sdmr/constantes/constantes.dart';
@@ -11,6 +13,11 @@ import 'package:sdmr/components/CartaoBusca.dart';
 import 'package:sdmr/main.dart';
 import 'package:sdmr/modelos/PontoColeta.dart';
 import 'package:sdmr/tela_inicial_usuario.dart';
+
+import 'package:material_tag_editor/tag_editor.dart';
+import 'package:material_tag_editor/tag_editor_layout_delegate.dart';
+import 'package:material_tag_editor/tag_layout.dart';
+import 'package:material_tag_editor/tag_render_layout_box.dart';
 
 class TelaBuscarPontoColeta extends StatefulWidget {
   
@@ -22,7 +29,17 @@ class _TelaBuscarPontoColetaState extends State<TelaBuscarPontoColeta> {
   bool carregando = true;
   
   List<PontoColeta> pontosColetaEncontrados = [];
-  
+
+  List<String> tipo_materiais = [];
+  final FocusNode _focusNode = FocusNode();
+  final TextEditingController _textEditingController = TextEditingController();
+  _onDelete(index) {
+    setState(() {
+      tipo_materiais.removeAt(index);
+    });
+  }
+
+
   void fetch_data() async{
     try{
       http.Response response = await http.get(
@@ -75,6 +92,7 @@ class _TelaBuscarPontoColetaState extends State<TelaBuscarPontoColeta> {
     }
   }
 
+
   @override
   void initState() {
     fetch_data();
@@ -101,20 +119,65 @@ class _TelaBuscarPontoColetaState extends State<TelaBuscarPontoColeta> {
           children: [
             Column(
               children: [
-                Container(
-                  padding: EdgeInsets.all(16.0),
-                  child: TextField(
-                    obscureText: true,
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Buscar Ponto de Coleta',
-                        labelStyle: TextStyle(fontSize: 25)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 10),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all( color: Colors.teal),
+                      borderRadius: BorderRadius.circular(12),
                     ),
+                    padding: EdgeInsets.all(16.0),
+                    child: TagEditor(
+                      length: tipo_materiais.length,
+                      controller: _textEditingController,
+                      focusNode: _focusNode,
+                      delimiters: [',', ' ',],
+                      hasAddButton: false,
+                      resetTextOnSubmitted: true,
+                      // This is set to grey just to illustrate the `textStyle` prop
+                      textStyle: const TextStyle(color: Colors.grey, fontSize: 25),
+                      onSubmitted: (outstandingValue) {
+                        setState(() {
+                          tipo_materiais.add(outstandingValue);
+                        });
+                      },
+                      inputDecoration: const InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'Digite um material...',
+                        hintStyle: TextStyle(color: Colors.teal, fontSize: 25),
+                      ),
+                      onTagChanged: (newValue) {
+                        setState(() {
+                          tipo_materiais.add(newValue);
+                        });
+                      },
+                      tagBuilder: (context, index) => _Chip(
+                        index: index,
+                        label: tipo_materiais[index],
+                        onDeleted: _onDelete,
+                      ),
+                      // InputFormatters example, this disallow \ and /
+                      inputFormatters: [
+                        FilteringTextInputFormatter.deny(RegExp(r'[/\\]'))
+                      ],
+                    ),
+                    /*TextField(
+                      onSubmitted: (String text){
+                          print(text);
+                        },
+                      obscureText: false,
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Buscar Ponto de Coleta',
+                          labelStyle: TextStyle(fontSize: 25)
+                      ),
+                    ),*/
                   ),
                 ),
                 Container(
                   child: ElevatedButton(
                     onPressed: (){
+                      print(tipo_materiais);
                       /*Navigator.push(context,
                           MaterialPageRoute(
                               builder: (context) => TelaAgendamento(),
@@ -132,7 +195,7 @@ class _TelaBuscarPontoColetaState extends State<TelaBuscarPontoColeta> {
                   child: GestureDetector(
                     onTap: (){
                       Navigator.pushAndRemoveUntil(
-                          context, MaterialPageRoute(builder: (context)=>TelaInicialUsuario()), (route) => false);
+                          context, MaterialPageRoute(builder: (context)=>TelaInicialDoador()), (route) => false);
                     },
                     child: Text(
                       'Voltar',
@@ -162,6 +225,35 @@ class _TelaBuscarPontoColetaState extends State<TelaBuscarPontoColeta> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _Chip extends StatelessWidget {
+  const _Chip({
+    required this.label,
+    required this.onDeleted,
+    required this.index,
+  });
+
+  final String label;
+  final ValueChanged<int> onDeleted;
+  final int index;
+
+  @override
+  Widget build(BuildContext context) {
+    return Chip(
+      backgroundColor: Colors.teal,
+      labelPadding: const EdgeInsets.only(left: 8.0),
+      label: Text(label, style: TextStyle(color: Colors.white, fontSize: 25),),
+      deleteIcon: Icon(
+        Icons.close,
+        size: 20,
+        color: Colors.white,
+      ),
+      onDeleted: () {
+        onDeleted(index);
+      },
     );
   }
 }

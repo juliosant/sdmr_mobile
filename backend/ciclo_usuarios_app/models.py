@@ -17,6 +17,7 @@ class Perfil(AbstractUser):
     des_tipo_perfi = models.CharField(max_length=1, choices=TIPO_PERFIL)
     des_sobre_mim = models.TextField(max_length=300)
     #img_profile = models.ImageField(upload_to='img_profile', null=True, blank=True)
+    num_doacoes_concluidas = models.IntegerField(default=0)
     
 
 class Doador(Perfil):

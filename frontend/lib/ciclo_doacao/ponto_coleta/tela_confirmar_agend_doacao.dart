@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:sdmr/ciclo_doacao/ponto_coleta/tela_lista_doacoes_aguardando_conf_ag.dart';
+import 'package:sdmr/ciclo_usuarios/ponto_coleta/tela_inicial_ponto_coleta.dart';
 import 'package:sdmr/constantes/constantes.dart';
 import 'package:sdmr/tela_inicial_usuario.dart';
 import 'package:select_form_field/select_form_field.dart';
@@ -124,7 +125,7 @@ class _TelaConfirmarAgendDoacaoState extends State<TelaConfirmarAgendDoacao> {
       appBar: AppBar(
         title: const Center(
           child: Text(
-            'Recycle',
+            'Confirmar Agendamento',
             style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
           ),
         ),
@@ -132,16 +133,18 @@ class _TelaConfirmarAgendDoacaoState extends State<TelaConfirmarAgendDoacao> {
       ),
       body: Column(
         children: [
-          Expanded(
+          /*Expanded(
+            flex: 0,
             child: Container(
+              padding: EdgeInsets.only(top: 32.0),
               child: Center(
                 child: Text(
-                  'Confirmar Agendamento',
+                  'Dados doador',
                   style: kDesTituloPagina,
                 ),
               ),
             ),
-          ),
+          ),*/
           Expanded(
             flex: 2,
             child: Container(
@@ -226,7 +229,7 @@ class _TelaConfirmarAgendDoacaoState extends State<TelaConfirmarAgendDoacao> {
                               des_status_atual_doacao: '3');
                             //Navigator.pop(context);
                             Navigator.pushAndRemoveUntil(
-                                context, MaterialPageRoute(builder: (context)=>TelaInicialUsuario()), (route) => false);
+                                context, MaterialPageRoute(builder: (context)=>TelaInicialPontoColeta()), (route) => false);
                             //Navigator.pop(context);
 
 

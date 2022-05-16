@@ -24,6 +24,17 @@ class CartaoAgendamentos extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: (){
+        Navigator.pushAndRemoveUntil(
+            context, MaterialPageRoute(builder: (context)=>TelaConfirmarAgendDoacao(
+          id: id,
+          nome_solicitante: nome_solicitante,
+          periodo: periodo,
+          des_email_solicitante: des_email_solicitante,
+          des_telefone_solicitante: des_telefone_solicitante,
+        )), (route) => false);
+      },
+      /*
+      onTap: (){
         Navigator.push(context,
             MaterialPageRoute(builder: (context)=> TelaConfirmarAgendDoacao(
               id: id,
@@ -32,7 +43,7 @@ class CartaoAgendamentos extends StatelessWidget {
               des_email_solicitante: des_email_solicitante,
               des_telefone_solicitante: des_telefone_solicitante,
             )));
-      },
+      },*/
       child: Card(
         child: Padding(
           padding: EdgeInsets.all(16),

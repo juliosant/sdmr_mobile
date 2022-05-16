@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sdmr/ciclo_doacao/doador/tela_lista_doacoes_materiais.dart';
+import 'package:sdmr/ciclo_usuarios/doador/tela_inicial_doador.dart';
 import 'package:sdmr/constantes/constantes.dart';
 import 'package:sdmr/tela_inicial_usuario.dart';
 import 'package:select_form_field/select_form_field.dart';
@@ -107,7 +108,7 @@ class _TelaConfirmarDoacaoState extends State<TelaConfirmarDoacao> {
       ),
     );
     if (response.statusCode == 200){
-      print('ok');
+      print('ok-pontos');
     }
     else {
       print('Não deu');
@@ -156,7 +157,12 @@ class _TelaConfirmarDoacaoState extends State<TelaConfirmarDoacao> {
       ),
     );
     if (response.statusCode == 200){
-      print('ok');
+      print('ok-confirmado_doacao');
+      setState(() {
+        atualizar_dados_doador = true;
+      });
+      Navigator.pushAndRemoveUntil(
+          context, MaterialPageRoute(builder: (context)=>TelaInicialDoador()), (route) => false);
     }
     else {
       print('Não deu');
@@ -338,6 +344,7 @@ class _TelaConfirmarDoacaoState extends State<TelaConfirmarDoacao> {
                           atualizarPontosDoador(pontos: pontosDoacao);
 
                           print(confirmado);
+
                         }
                         if (confirmado == 'nao'){
                           confirmarDoacao(
@@ -353,8 +360,9 @@ class _TelaConfirmarDoacaoState extends State<TelaConfirmarDoacao> {
 
                           print(confirmado);
                         }
-                        Navigator.pushAndRemoveUntil(
-                            context, MaterialPageRoute(builder: (context)=>TelaInicialUsuario()), (route) => false);
+
+                        //Navigator.pushAndRemoveUntil(
+                        //    context, MaterialPageRoute(builder: (context)=>TelaInicialDoador()), (route) => false);
                         //Navigator.pop(context);
 
 

@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:sdmr/ciclo_usuarios/ponto_coleta/tela_inicial_ponto_coleta.dart';
+import 'package:sdmr/components/CartaoDoacaoAgendada.dart';
 import 'dart:convert';
 import 'package:sdmr/constantes/constantes.dart';
 import 'package:sdmr/main.dart';
@@ -93,7 +95,7 @@ class _TelaListaDoacoesAguardandoConfAgendState extends State<TelaListaDoacoesAg
             GestureDetector(
               onTap: (){
                 Navigator.pushAndRemoveUntil(
-                    context, MaterialPageRoute(builder: (context)=>TelaInicialUsuario()), (route) => false);
+                    context, MaterialPageRoute(builder: (context)=>TelaInicialPontoColeta()), (route) => false);
               },
               child: Container(
                 padding: EdgeInsets.all(16.0),
@@ -108,6 +110,16 @@ class _TelaListaDoacoesAguardandoConfAgendState extends State<TelaListaDoacoesAg
               children: agendamentosAConfirmar.map((e) {
                 if (e.cod_beneficiario == globalIdUser && e.des_status_atual_atendimento == '0' && e.des_status_atual_doacao == '0') {
                   return CartaoAgendamentos(
+                    id: e.id,
+                    nome_solicitante: e.nome_solicitante +' '+ e.sobrenome_solicitante,
+                    periodo: e.dat_dia +' '+ e.des_hora,
+                    des_email_solicitante: e.des_email_solicitante,
+                    des_telefone_solicitante: e.des_telefone_solicitante,
+
+                  );
+                }
+                else if (e.cod_beneficiario == globalIdUser && e.des_status_atual_atendimento == '1' && e.des_status_atual_doacao == '4'){
+                  return CartaoDoacaoAgendada(
                     id: e.id,
                     nome_solicitante: e.nome_solicitante +' '+ e.sobrenome_solicitante,
                     periodo: e.dat_dia +' '+ e.des_hora,

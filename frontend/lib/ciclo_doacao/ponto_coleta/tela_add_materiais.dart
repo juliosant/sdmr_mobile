@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:sdmr/ciclo_doacao/ponto_coleta/tela_lista_doacoes_agendadas.dart';
+import 'package:sdmr/ciclo_usuarios/ponto_coleta/tela_inicial_ponto_coleta.dart';
 import 'package:sdmr/constantes/constantes.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -95,7 +96,12 @@ class _TelaAdicionarMateriaisState extends State<TelaAdicionarMateriais> {
       ),
     );
     if (response.statusCode == 200){
-      print('ok');
+      print('ok-atualizou_status');
+      setState(() {
+        atualizar_dados_ponto_coleta = true;
+      });
+      Navigator.pushAndRemoveUntil(
+          context, MaterialPageRoute(builder: (context)=>TelaInicialPontoColeta()), (route) => false);
     }
     else {
       print('Não deu');
@@ -125,7 +131,7 @@ class _TelaAdicionarMateriaisState extends State<TelaAdicionarMateriais> {
           }),
       );
       if (response.statusCode == 201){
-        print('ok');
+        print('ok-cadastro_materiais');
       }
       else {
         print('Não deu');
@@ -402,8 +408,8 @@ class _TelaAdicionarMateriaisState extends State<TelaAdicionarMateriais> {
                         mapValoresMateriaisReciclaveis = {};
                         codigo = 0;
                       });
-                      Navigator.pushAndRemoveUntil(
-                          context, MaterialPageRoute(builder: (context)=>TelaInicialUsuario()), (route) => false);
+                      //Navigator.pushAndRemoveUntil(
+                      //    context, MaterialPageRoute(builder: (context)=>TelaInicialPontoColeta()), (route) => false);
                       //Navigator.pop(context);
                     },
 

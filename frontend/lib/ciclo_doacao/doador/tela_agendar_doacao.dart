@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:sdmr/ciclo_doacao/doador/tela_buscar_ponto_coleta.dart';
+import 'package:sdmr/ciclo_usuarios/doador/tela_inicial_doador.dart';
 import 'package:sdmr/main.dart';
 import 'package:sdmr/tela_inicial_usuario.dart';
 import '../../constantes/constantes.dart';
@@ -97,7 +98,7 @@ class _TelaAgendarDoacaoState extends State<TelaAgendarDoacao> {
 
       if (response.statusCode == 201) {
         Navigator.pushAndRemoveUntil(
-            context, MaterialPageRoute(builder: (context)=>TelaInicialUsuario()), (route) => false);
+            context, MaterialPageRoute(builder: (context)=>TelaInicialDoador()), (route) => false);
         Alert(
           context: context,
           title: "Solcitado",
@@ -281,7 +282,7 @@ class _TelaAgendarDoacaoState extends State<TelaAgendarDoacao> {
                   );
                   /*if (statusCode == 201) {
                     Navigator.pushAndRemoveUntil(
-                        context, MaterialPageRoute(builder: (context)=>TelaInicialUsuario()), (route) => false);
+                        context, MaterialPageRoute(builder: (context)=>TelaInicialDoador()), (route) => false);
                     Alert(
                       context: context,
                       title: "Solcitado",

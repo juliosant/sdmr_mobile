@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:sdmr/ciclo_usuarios/doador/tela_inicial_doador.dart';
 import 'package:sdmr/components/CartaoDoacaoMateriais.dart';
 import 'dart:convert';
 import 'package:sdmr/constantes/constantes.dart';
@@ -95,7 +96,7 @@ class _TelaListaDoacoesMateriais extends State<TelaListaDoacoesMateriais> {
             GestureDetector(
               onTap: (){
                 Navigator.pushAndRemoveUntil(
-                    context, MaterialPageRoute(builder: (context)=>TelaInicialUsuario()), (route) => false);
+                    context, MaterialPageRoute(builder: (context)=>TelaInicialDoador()), (route) => false);
               },
               child: Container(
                 padding: EdgeInsets.all(16.0),

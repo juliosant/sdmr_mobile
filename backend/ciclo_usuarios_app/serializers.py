@@ -1,6 +1,9 @@
+from django.db.models.query_utils import Q
 from rest_framework import serializers
+from ciclo_doacao_app.models import Atendimento
 from .models import Doador, Perfil, PontoColeta
 from rest_framework.validators import UniqueTogetherValidator
+
 
 class PerfilSerializer(serializers.ModelSerializer):
     class Meta:
@@ -16,10 +19,28 @@ class DoadorSerializer(serializers.ModelSerializer):
         'des_telefone', 'des_tipo_perfi', 'des_sobre_mim', 'num_pontos_gerais']
 
 class DoadorNomeSerializer(serializers.ModelSerializer):
+    #solicitante  = serializers.SlugRelatedField(slug_field='des_status_atual_atendimento', many=True, read_only=False, queryset=Atendimento.objects.filter(des_status_atual_atendimento='4'))
+    #print(type(solicitante))
+    #doacoes_concluidas = len(list(solicitante.child_relation.queryset))
+    #print(lista_doacoes)
+    
+    doacoes_concluidas = serializers.SerializerMethodField('get_doacoes_concluidas')
+
+    doacoes_pendentes = serializers.SerializerMethodField('get_doacoes_pendentes')
+
     class Meta:
         model = Doador
-        fields = ['first_name', 'last_name', 'num_pontos_gerais']
+        fields = ['id', 'first_name', 'last_name', 'num_pontos_gerais', 'doacoes_concluidas', 'doacoes_pendentes']
+    
+    def get_doacoes_concluidas(self, doador):
+        #doacoes_concluidas = doador.id
+        doacoes_concluidas = len(list(Atendimento.objects.filter(cod_solicitante=doador.id, des_status_atual_atendimento='4')))
+        return doacoes_concluidas
 
+    def get_doacoes_pendentes(self, doador):
+        #doacoes_concluidas = doador.id
+        doacoes_pendentes = len(list(Atendimento.objects.filter(cod_solicitante=doador.id, des_status_atual_atendimento='2')))
+        return doacoes_pendentes
 
 
 class PontoColetaSerializer(serializers.ModelSerializer):
@@ -28,6 +49,36 @@ class PontoColetaSerializer(serializers.ModelSerializer):
         fields = ['id', 'username','des_nome_instituicao', 'des_nome_local','first_name', 'last_name', 'password', 'des_nome_rua_av', 
         'des_numero', 'des_bairro', 'des_cidade', 'des_estado', 'des_complemento',
          'email', 'des_telefone', 'des_tipo_perfi', 'des_sobre_mim', 'col_materiais']
+
+
+class PonoColetaTelaInicialSerializer(serializers.ModelSerializer):
+    #solicitante  = serializers.SlugRelatedField(slug_field='des_status_atual_atendimento', many=True, read_only=False, queryset=Atendimento.objects.filter(des_status_atual_atendimento='4'))
+    #print(type(solicitante))
+    #doacoes_concluidas = len(list(solicitante.child_relation.queryset))
+    #print(lista_doacoes)
+    
+    doacoes_concluidas = serializers.SerializerMethodField('get_doacoes_concluidas')
+
+    doacoes_pendentes = serializers.SerializerMethodField('get_doacoes_pendentes')
+
+    class Meta:
+        model = PontoColeta
+        fields = ['id', 'doacoes_concluidas', 'doacoes_pendentes']
+    
+    def get_doacoes_concluidas(self, ptcoleta):
+        #doacoes_concluidas = ptcoleta.id
+        doacoes_concluidas = len(list(Atendimento.objects.filter(cod_beneficiario=ptcoleta.id, des_status_atual_atendimento='4')))
+        return doacoes_concluidas
+
+    def get_doacoes_pendentes(self, ptcoleta):
+        buscar = Q(
+                Q(cod_beneficiario=ptcoleta.id) &
+                Q(des_status_atual_atendimento='0') |
+                Q(des_status_atual_atendimento='1')
+            )
+        #doacoes_concluidas = ptcoleta.id
+        doacoes_pendentes = len(list(Atendimento.objects.filter(buscar))) #cod_beneficiario=ptcoleta.id, des_status_atual_atendimento='0'
+        return doacoes_pendentes
 
 
 class PerfilAuthSerializer(serializers.ModelSerializer):

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:sdmr/ciclo_usuarios/doador/tela_inicial_doador.dart';
+import 'package:sdmr/ciclo_usuarios/ponto_coleta/tela_inicial_ponto_coleta.dart';
 import 'package:sdmr/ciclo_usuarios/tela_erro_login.dart';
 import 'package:sdmr/ciclo_usuarios/tela_escolher_tipo_usuario_cadastro.dart';
 import 'package:sdmr/constantes/constantes.dart';
@@ -37,10 +39,11 @@ class _TelaLoginState extends State<TelaLogin> {
       Navigator.pushAndRemoveUntil(
           context, MaterialPageRoute(builder: (context)=>TelaErroLogin()), (route) => false);
     }
-    else{
+    else {
       setState(() {
         globalToken = jsonDecode(response.body)['token'];
         globalIdUser = jsonDecode(response.body)['user'];
+        globalIdPerfilTipo = jsonDecode(response.body)['tipo_perfil'];
       });
       print(globalToken);
       print(globalIdUser);
@@ -49,8 +52,18 @@ class _TelaLoginState extends State<TelaLogin> {
       //print(response.statusCode);
       //print(response.body.runtimeType);
       //print(serie_token);
-      Navigator.pushAndRemoveUntil(
-          context, MaterialPageRoute(builder: (context)=>TelaInicialUsuario()), (route) => false);
+      if (globalIdPerfilTipo == 'D') {
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => TelaInicialDoador()), (
+            route) => false);
+      }
+      else if(globalIdPerfilTipo == 'P') {
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => TelaInicialPontoColeta()), (
+            route) => false);
+      }
     }
   }
 

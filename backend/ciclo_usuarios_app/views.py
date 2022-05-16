@@ -30,13 +30,13 @@ class DoadorGetCreate(generics.ListCreateAPIView):
     queryset = Doador.objects.all()
     serializer_class = DoadorSerializer
 
+# API para Alterar/Excluir agendamento
 class DoadorUpdateDelete(generics.RetrieveUpdateDestroyAPIView):
     queryset = Doador.objects.all()
     serializer_class = DoadorNomeSerializer
 
 
-
-# API para Alterar/Excluir agendamento
+# Mostrar Dados tela inicial
 class DoadorNomeUpdateDelete(generics.RetrieveUpdateDestroyAPIView):
     queryset = Doador.objects.all()
     serializer_class = DoadorNomeSerializer
@@ -58,6 +58,14 @@ class PontoColetaUpdateDelete(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = PontoColetaSerializer
 
 
+# Mostrar dados tela inicial
+class PonoColetaTelaInicialUpdateDelete(generics.RetrieveUpdateDestroyAPIView):
+    queryset = PontoColeta.objects.all()
+    serializer_class = PonoColetaTelaInicialSerializer
+
+class PonoColetaTelaInicialGetCreate(generics.ListCreateAPIView):
+    queryset = PontoColeta.objects.all()
+    serializer_class = PonoColetaTelaInicialSerializer
 
 
 class PerfilRecordView(APIView):
@@ -162,7 +170,7 @@ class PerfilRetornTokenId(ObtainAuthToken):
         user = serializer.validated_data['user']
         token, created = Token.objects.get_or_create(user=user)
         perfil = Perfil.objects.get(id=user.id)
-        print(perfil.des_tipo_perfi)
-        return Response({'token': token.key, 'user': user.id})
+        #print(perfil.des_tipo_perfi)
+        return Response({'token': token.key, 'user': user.id, 'tipo_perfil': perfil.des_tipo_perfi})
 
 obter_token_id_perfil = PerfilRetornTokenId.as_view()

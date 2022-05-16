@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:sdmr/ciclo_usuarios/ponto_coleta/tela_inicial_ponto_coleta.dart';
 import 'package:sdmr/components/CartaoDoacaoAgendada.dart';
 import 'package:sdmr/constantes/constantes.dart';
 import 'package:sdmr/main.dart';
@@ -91,7 +92,7 @@ class _TelaListaDoacoesAgendadasState extends State<TelaListaDoacoesAgendadas> {
             GestureDetector(
               onTap: (){
                 Navigator.pushAndRemoveUntil(
-                    context, MaterialPageRoute(builder: (context)=>TelaInicialUsuario()), (route) => false);
+                    context, MaterialPageRoute(builder: (context)=>TelaInicialPontoColeta()), (route) => false);
               },
               child: Center(
                 child: Container(
