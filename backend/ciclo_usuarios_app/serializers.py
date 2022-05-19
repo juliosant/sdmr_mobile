@@ -90,6 +90,7 @@ class PerfilAuthSerializer(serializers.ModelSerializer):
     class Meta:
         model = Perfil
         fields = (
+            'id',
             'username',
             'first_name',
             'last_name',
@@ -114,9 +115,20 @@ class PontoColetaAuthSerializer(serializers.ModelSerializer):
         model = PontoColeta
         fields = (
             'username',
+            'des_nome_instituicao',
             'first_name',
             'last_name',
             'email',
+            'des_telefone',
+            'des_tipo_perfi',
+            'des_nome_local',
+            'des_nome_rua_av',
+            'des_numero',
+            'des_bairro',
+            'des_cidade',
+            'des_estado',
+            'des_complemento',
+            'col_materiais',
             'password',
         )
         validators = [
@@ -131,6 +143,7 @@ class DoadorAuthSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         perfil = Doador.objects.create_user(**validated_data)
+        print(type(perfil))
         return perfil
 
     class Meta:
@@ -140,6 +153,8 @@ class DoadorAuthSerializer(serializers.ModelSerializer):
             'first_name',
             'last_name',
             'email',
+            'des_telefone',
+            'des_tipo_perfi',
             'password',
         )
         validators = [

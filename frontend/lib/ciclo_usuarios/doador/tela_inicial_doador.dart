@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:sdmr/ciclo_cupom/doador/tela_geral_cupons.dart';
 import 'dart:convert';
 
 import 'package:sdmr/main.dart';
@@ -632,16 +633,15 @@ class _TelaInicialDoadorState extends State<TelaInicialDoador> {
                         backgroundColor: MaterialStateProperty.all(Colors.teal),
                       ),
                       onPressed: (){
-                        fetch_data();
-                      }/*
+
                       Navigator.pushAndRemoveUntil(
-                          context, MaterialPageRoute(builder: (context)=>TelaListaDoacoesMateriais()), (route) => false);
+                          context, MaterialPageRoute(builder: (context)=>TelaGeralCupons()), (route) => false);
                       /*Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => TelaListaDoacoesMateriais()
                         ),);*/
-                    },*/
+                    },
                   ),
                   ElevatedButton(
                     child: Text(

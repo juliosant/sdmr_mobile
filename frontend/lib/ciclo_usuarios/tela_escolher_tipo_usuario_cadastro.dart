@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:sdmr/ciclo_usuarios/doador/tela_cadastrar_doador.dart';
+import 'package:sdmr/ciclo_usuarios/ponto_coleta/tela_cadastrar_ponto_coleta.dart';
 import 'package:sdmr/ciclo_usuarios/tela_login.dart';
 import 'package:sdmr/constantes/constantes.dart';
 
@@ -31,7 +33,11 @@ class _TelaEscolherUsuarioCadastroState extends State<TelaEscolherUsuarioCadastr
           children: [
             Container(
               child: ElevatedButton(
-                onPressed: (){},
+                onPressed: (){
+                  Navigator.pushAndRemoveUntil(
+                      context, MaterialPageRoute(builder: (context)=>TelaCadastroDoador()), (route) => false);
+
+                },
                 child: Text('Doador', style: kTextoBotao,),
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(Colors.teal),
@@ -40,7 +46,10 @@ class _TelaEscolherUsuarioCadastroState extends State<TelaEscolherUsuarioCadastr
             ),
             Container(
               child: ElevatedButton(
-                onPressed: (){},
+                onPressed: (){
+                  Navigator.pushAndRemoveUntil(
+                      context, MaterialPageRoute(builder: (context)=>TelaCadastroPontoColeta()), (route) => false);
+                },
                 child: Text('Ponto de Coleta', style: kTextoBotao,),
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(Colors.teal),
