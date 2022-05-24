@@ -1,10 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:sdmr/ciclo_doacao/ponto_coleta/tela_lista_doacoes_aguardando_conf_ag.dart';
 import 'package:sdmr/ciclo_usuarios/ponto_coleta/tela_inicial_ponto_coleta.dart';
 import 'package:sdmr/constantes/constantes.dart';
-import 'package:sdmr/tela_inicial_usuario.dart';
 import 'package:select_form_field/select_form_field.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -81,14 +81,14 @@ class _TelaConfirmarAgendDoacaoState extends State<TelaConfirmarAgendDoacao> {
     );
     var data = json.decode(response.body);
 
-    print("id " +data['id'].toString());
-    print("cod_solicitante "+ data['cod_solicitante'].toString());
-    print("cod_beneficiario "+ data['cod_beneficiario'].toString());
-    print("dat_dia "+ data['dat_dia']);
-    print("des_hora: " +data['des_hora']);
-    print(bool_confirmado);
-    print(des_status_atual_atendimento);
-    print(des_status_atual_doacao);
+    //print("id " +data['id'].toString());
+    //print("cod_solicitante "+ data['cod_solicitante'].toString());
+    //print("cod_beneficiario "+ data['cod_beneficiario'].toString());
+    //print("dat_dia "+ data['dat_dia']);
+    //print("des_hora: " +data['des_hora']);
+    //print(bool_confirmado);
+    //print(des_status_atual_atendimento);
+    //print(des_status_atual_doacao);
     //print(data['cod_beneficiario'].runtimeType);
 
     response = await http.put(
@@ -111,6 +111,58 @@ class _TelaConfirmarAgendDoacaoState extends State<TelaConfirmarAgendDoacao> {
       ),
     );
     if (response.statusCode == 200){
+      if (des_status_atual_atendimento == '1'){
+        Alert(
+          style: AlertStyle(
+            isCloseButton: false,
+            backgroundColor: Colors.white,
+          ),
+          onWillPopActive: true,
+          context: context,
+          //type: AlertType.success,
+          image: Image.asset("img/icon_alert_sucesso.png"),
+          title: "Agendado",
+          desc: "Você confirmou o Agendamento",
+          buttons: [
+            DialogButton(
+              color: Colors.teal,
+              child: Text(
+                "OK",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+              onPressed: () => Navigator.pushAndRemoveUntil(
+                  context, MaterialPageRoute(builder: (context)=>TelaInicialPontoColeta()), (route) => false),
+              width: 120,
+            )
+          ],
+        ).show();
+      }
+      if (des_status_atual_atendimento == '3'){
+        Alert(
+          style: AlertStyle(
+            isCloseButton: false,
+            backgroundColor: Colors.white,
+          ),
+          onWillPopActive: true,
+          context: context,
+          type: AlertType.info,
+          //image: Image.asset("img/icon_alert_sucesso.png"),
+          title: "Agendado",
+          desc: "Você cancelou o Agendamento",
+          buttons: [
+            DialogButton(
+              color: Colors.teal,
+              child: Text(
+                "OK",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+              onPressed: () => Navigator.pushAndRemoveUntil(
+                  context, MaterialPageRoute(builder: (context)=>TelaInicialPontoColeta()), (route) => false),
+              width: 120,
+            )
+          ],
+        ).show();
+      }
       print('ok');
     }
     else {
@@ -228,8 +280,8 @@ class _TelaConfirmarAgendDoacaoState extends State<TelaConfirmarAgendDoacao> {
                               des_status_atual_atendimento: '3',
                               des_status_atual_doacao: '3');
                             //Navigator.pop(context);
-                            Navigator.pushAndRemoveUntil(
-                                context, MaterialPageRoute(builder: (context)=>TelaInicialPontoColeta()), (route) => false);
+                            //Navigator.pushAndRemoveUntil(
+                            //    context, MaterialPageRoute(builder: (context)=>TelaInicialPontoColeta()), (route) => false);
                             //Navigator.pop(context);
 
 

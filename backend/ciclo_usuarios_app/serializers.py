@@ -30,7 +30,7 @@ class DoadorNomeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Doador
-        fields = ['id', 'first_name', 'last_name', 'num_pontos_gerais', 'doacoes_concluidas', 'doacoes_pendentes']
+        fields = ['id', 'first_name', 'last_name', 'num_pontos_gerais','num_pontos_ranking', 'doacoes_concluidas', 'doacoes_pendentes']
     
     def get_doacoes_concluidas(self, doador):
         #doacoes_concluidas = doador.id
@@ -41,6 +41,12 @@ class DoadorNomeSerializer(serializers.ModelSerializer):
         #doacoes_concluidas = doador.id
         doacoes_pendentes = len(list(Atendimento.objects.filter(cod_solicitante=doador.id, des_status_atual_atendimento='2')))
         return doacoes_pendentes
+
+class DoadorRankeadoSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Doador
+        fields = ['id', 'first_name', 'last_name', 'num_pontos_gerais','num_pontos_ranking']
 
 
 class PontoColetaSerializer(serializers.ModelSerializer):
@@ -73,8 +79,10 @@ class PonoColetaTelaInicialSerializer(serializers.ModelSerializer):
     def get_doacoes_pendentes(self, ptcoleta):
         buscar = Q(
                 Q(cod_beneficiario=ptcoleta.id) &
-                Q(des_status_atual_atendimento='0') |
-                Q(des_status_atual_atendimento='1')
+                Q(
+                    Q(des_status_atual_atendimento='0') |
+                    Q(des_status_atual_atendimento='1')
+                )
             )
         #doacoes_concluidas = ptcoleta.id
         doacoes_pendentes = len(list(Atendimento.objects.filter(buscar))) #cod_beneficiario=ptcoleta.id, des_status_atual_atendimento='0'

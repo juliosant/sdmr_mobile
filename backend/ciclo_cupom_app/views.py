@@ -15,3 +15,4 @@ class CupomGetCreate(generics.ListCreateAPIView):
 class CupomUpdateDelete(generics.RetrieveUpdateDestroyAPIView):
     queryset = Cupom.objects.all()
     serializer_class = CupomSerializer
+

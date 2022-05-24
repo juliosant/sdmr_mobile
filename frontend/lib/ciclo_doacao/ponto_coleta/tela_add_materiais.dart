@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:sdmr/ciclo_doacao/ponto_coleta/tela_lista_doacoes_agendadas.dart';
 import 'package:sdmr/ciclo_usuarios/ponto_coleta/tela_inicial_ponto_coleta.dart';
 import 'package:sdmr/constantes/constantes.dart';
@@ -48,6 +49,8 @@ class _TelaAdicionarMateriaisState extends State<TelaAdicionarMateriais> {
   final String periodo;
   final String des_email_solicitante;
   final String des_telefone_solicitante;
+
+  int _statusCode = 0;
 
   _TelaAdicionarMateriaisState({
     required this.id,
@@ -100,8 +103,32 @@ class _TelaAdicionarMateriaisState extends State<TelaAdicionarMateriais> {
       setState(() {
         atualizar_dados_ponto_coleta = true;
       });
-      Navigator.pushAndRemoveUntil(
-          context, MaterialPageRoute(builder: (context)=>TelaInicialPontoColeta()), (route) => false);
+      Alert(
+        style: AlertStyle(
+          isCloseButton: false,
+          backgroundColor: Colors.white,
+        ),
+        onWillPopActive: true,
+        context: context,
+        //type: AlertType.success,
+        image: Image.asset("img/icon_alert_sucesso.png"),
+        title: "Materiais cadastrados",
+        desc: "Doador irá confirmar doação",
+        buttons: [
+          DialogButton(
+            color: Colors.teal,
+            child: Text(
+              "OK",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+            onPressed: () => Navigator.pushAndRemoveUntil(
+                context, MaterialPageRoute(builder: (context)=>TelaInicialPontoColeta()), (route) => false),
+            width: 120,
+          )
+        ],
+      ).show();
+      //Navigator.pushAndRemoveUntil(
+      //    context, MaterialPageRoute(builder: (context)=>TelaInicialPontoColeta()), (route) => false);
     }
     else {
       print('Não deu');
@@ -112,7 +139,9 @@ class _TelaAdicionarMateriaisState extends State<TelaAdicionarMateriais> {
     required String nome,
     required String tipo,
     required double qtde,
-    required double pontos
+    required double pontos,
+    required int index,
+    required int total_materiais
 }) async{
     try{
       http.Response response = await http.post(Uri.parse(kUrlDoacao+'material/'),
@@ -132,6 +161,10 @@ class _TelaAdicionarMateriaisState extends State<TelaAdicionarMateriais> {
       );
       if (response.statusCode == 201){
         print('ok-cadastro_materiais');
+        print(index);
+        if(index+1 == total_materiais){
+          atualizarStatusDoacao();
+        }
       }
       else {
         print('Não deu');
@@ -140,9 +173,10 @@ class _TelaAdicionarMateriaisState extends State<TelaAdicionarMateriais> {
     catch (e){
       print('Erro'+e.toString());
     }
-    atualizarStatusDoacao();
+    //atualizarStatusDoacao();
   }
-  
+
+
   void adicionarFormulario(){
     int identificacao = codigo;
     String nome = '';
@@ -155,6 +189,7 @@ class _TelaAdicionarMateriaisState extends State<TelaAdicionarMateriais> {
     mapaValores['tipo'] =tipo;
     mapaValores['qtde'] =qtde;
     mapaValores['pontos'] =pontos;
+    mapaValores['_controller'] = TextEditingController(text: '');
 
     mapFormulariosMateriais[identificacao.toString()] =
         Card(
@@ -212,6 +247,7 @@ class _TelaAdicionarMateriaisState extends State<TelaAdicionarMateriais> {
                     }),
                   ),
                   TextField(
+                    keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                         labelText: 'Qtd(KG)'
                     ),
@@ -223,8 +259,16 @@ class _TelaAdicionarMateriaisState extends State<TelaAdicionarMateriais> {
                     }),
                   ),
                   TextField(
-                    controller: TextEditingController()..text = pontos.toString(),
+                    controller: mapaValores['_controller']..text = (qtde*10).toString(),//pontos.toString(),
+                    onTap: (){
+                      setState(() {
+                        mapaValores['_controller'].text = (qtde*5).toString();
+                      });
+                    },
                     onChanged: (val) => setState(() {
+                      //val = (qtde * 10).toString();
+                      //print(val);
+                      //print(pontos);
                       pontos = double.parse(val);
                       mapaValores['pontos'] = pontos;
                       mapValoresMateriaisReciclaveis[identificacao.toString()] = mapaValores;
@@ -387,10 +431,12 @@ class _TelaAdicionarMateriaisState extends State<TelaAdicionarMateriais> {
                       listaAuxiliar.forEach((e) {
                         print(e);
                         cadastrarMateriais(
-                        nome: e['nome'],
-                        tipo: e['tipo'],
-                        qtde: e['qtde'],
-                        pontos: e['qtde'] * 5
+                          nome: e['nome'],
+                          tipo: e['tipo'],
+                          qtde: e['qtde'],
+                          pontos: e['qtde'] * 5,
+                          index: listaAuxiliar.indexOf(e),
+                          total_materiais: listaAuxiliar.length
                         );
                       });
                       /*listaAuxiliar.map((e) => {

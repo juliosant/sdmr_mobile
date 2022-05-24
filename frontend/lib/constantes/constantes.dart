@@ -31,3 +31,13 @@ const kBotaoRetono = TextStyle(
 fontSize: 25.0,
 fontWeight: FontWeight.bold,
 color: Colors.red);
+
+const kCTituloCardPendente1 = TextStyle(
+color: Colors.white,
+fontSize: 25.0,
+fontWeight: FontWeight.bold);
+
+const kConteudoCardPendente1 = TextStyle(
+    color: Colors.white,
+    fontSize: 20.0,
+    fontWeight: FontWeight.bold);

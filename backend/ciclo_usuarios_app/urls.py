@@ -21,5 +21,7 @@ urlpatterns = [
    path('cadastro_perfil/', PerfilRecordView.as_view(), name='perfil'),
    path('cadastro_pontoColeta/', PontoColetaRecordView.as_view(), name='cadastro_pontoColeta'),
    path('cadastro_doador/', DoadorRecordView.as_view(), name='cadastro_doador'),
+
+   path('ranking/', DoadorRankeadoGetCreate.as_view()),
    
 ]

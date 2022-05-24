@@ -50,15 +50,15 @@ class CartaoDoacaoMateriais extends StatelessWidget {
             )));*/
       },
       child: Card(
-        color: Colors.greenAccent,
+        color: Colors.green,
         child: Padding(
           padding: EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text('ID: '+ id.toString(), style: kTituloCardBusca,),
-              Text('Doador: '+nome_solicitante, style: kConteudoCardBusca,),
-              Text('Período: '+periodo, style: kConteudoCardBusca,)
+              Text('ID: '+ id.toString(), style: kCTituloCardPendente1,),
+              Text('Doador: '+nome_solicitante, style: kConteudoCardPendente1,),
+              Text('Período: '+periodo, style: kConteudoCardPendente1,)
             ],
           ),
         ),

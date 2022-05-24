@@ -45,6 +45,7 @@ class CartaoAgendamentos extends StatelessWidget {
             )));
       },*/
       child: Card(
+        color: Colors.greenAccent,
         child: Padding(
           padding: EdgeInsets.all(16),
           child: Column(

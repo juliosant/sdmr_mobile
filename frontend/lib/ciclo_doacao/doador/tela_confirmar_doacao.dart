@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:sdmr/ciclo_doacao/doador/tela_lista_doacoes_materiais.dart';
 import 'package:sdmr/ciclo_usuarios/doador/tela_inicial_doador.dart';
 import 'package:sdmr/constantes/constantes.dart';
@@ -92,8 +93,8 @@ class _TelaConfirmarDoacaoState extends State<TelaConfirmarDoacao> {
       }
     );
     var data = json.decode(response.body);
-
     data['num_pontos_gerais'] += pontos;
+    data['num_pontos_ranking'] += pontos;
 
     response = await http.put(
       Uri.parse(kUrlUsuarios+'doador/$cod_solicitante'),
@@ -103,12 +104,37 @@ class _TelaConfirmarDoacaoState extends State<TelaConfirmarDoacao> {
       },
       body: jsonEncode(<String, dynamic>
         {
-          "num_pontos_gerais": data['num_pontos_gerais']
+          "num_pontos_gerais": data['num_pontos_gerais'],
+          "num_pontos_ranking": data['num_pontos_ranking'],
         },
       ),
     );
     if (response.statusCode == 200){
       print('ok-pontos');
+      Alert(
+        style: AlertStyle(
+          isCloseButton: false,
+          backgroundColor: Colors.white,
+        ),
+        onWillPopActive: true,
+        context: context,
+        //type: AlertType.success,
+        image: Image.asset("img/icon_alert_sucesso.png"),
+        title: "Doação Comcluída",
+        desc: "Você ganho $pontos pts nesta doação",
+        buttons: [
+          DialogButton(
+            color: Colors.teal,
+            child: Text(
+              "OK",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+            onPressed: () => Navigator.pushAndRemoveUntil(
+                context, MaterialPageRoute(builder: (context)=>TelaInicialDoador()), (route) => false),
+            width: 120,
+          )
+        ],
+      ).show();
     }
     else {
       print('Não deu');
@@ -161,8 +187,35 @@ class _TelaConfirmarDoacaoState extends State<TelaConfirmarDoacao> {
       setState(() {
         atualizar_dados_doador = true;
       });
-      Navigator.pushAndRemoveUntil(
-          context, MaterialPageRoute(builder: (context)=>TelaInicialDoador()), (route) => false);
+      if (des_status_atual_atendimento == '3'){
+        Alert(
+          style: AlertStyle(
+            isCloseButton: false,
+            backgroundColor: Colors.white,
+          ),
+          onWillPopActive: true,
+          context: context,
+          type: AlertType.info,
+          //image: Image.asset("img/icon_alert_sucesso.png"),
+          title: "Doação cancelada",
+          desc: "Você cancelou a doação",
+          buttons: [
+            DialogButton(
+              color: Colors.teal,
+              child: Text(
+                "OK",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+              onPressed: () => Navigator.pushAndRemoveUntil(
+                  context, MaterialPageRoute(builder: (context)=>TelaInicialDoador()), (route) => false),
+              width: 120,
+            )
+          ],
+        ).show();
+      }
+
+      //Navigator.pushAndRemoveUntil(
+      //    context, MaterialPageRoute(builder: (context)=>TelaInicialDoador()), (route) => false);
     }
     else {
       print('Não deu');

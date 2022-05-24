@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:sdmr/ciclo_cupom/doador/tela_geral_cupons.dart';
+import 'package:sdmr/ciclo_usuarios/doador/tela_ranking.dart';
 import 'dart:convert';
 
 import 'package:sdmr/main.dart';
@@ -385,6 +387,7 @@ class _TelaInicialDoadorState extends State<TelaInicialDoador> {
   double pts = 0;
   int pendentes = 0;
   int concluidas = 0;
+  double pts_ranking = 0;
 
   void fetch_data() async{
     try{
@@ -398,6 +401,7 @@ class _TelaInicialDoadorState extends State<TelaInicialDoador> {
       //print(response.body);
       setState(() {
         pts = jsonDecode(response.body)['num_pontos_gerais'];
+        pts_ranking  = jsonDecode(response.body)['num_pontos_ranking'];
         concluidas = jsonDecode(response.body)['doacoes_concluidas'];
         pendentes = jsonDecode(response.body)['doacoes_pendentes'];
       });
@@ -411,7 +415,6 @@ class _TelaInicialDoadorState extends State<TelaInicialDoador> {
 
   @override
   void initState() {
-    // TODO: implement initState
     print('inicializou');
     fetch_data();
     super.initState();
@@ -611,6 +614,7 @@ class _TelaInicialDoadorState extends State<TelaInicialDoador> {
                           context, MaterialPageRoute(builder: (context)=>TelaBuscarPontoColeta()), (route) => false);
                     },
                   ),
+                  /*
                   ElevatedButton(
                     child: Text(
                       'Confirmar Doação',
@@ -622,6 +626,47 @@ class _TelaInicialDoadorState extends State<TelaInicialDoador> {
                     onPressed: (){
                       Navigator.pushAndRemoveUntil(
                           context, MaterialPageRoute(builder: (context)=>TelaListaDoacoesMateriais()), (route) => false);
+                    },
+                  ),
+                  */
+                  ElevatedButton(
+                    child: Text(
+                      'Ranking',
+                      style: kTextoBotao,
+                    ),
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.teal),
+                    ),
+                    onPressed: (){
+                      if(pts_ranking > 0){
+                        Navigator.pushAndRemoveUntil(
+                            context, MaterialPageRoute(builder: (context)=>TelaRanking()), (route) => false);
+                      }
+                      else{
+                        Alert(
+                          style: AlertStyle(
+                            isCloseButton: true,
+                            backgroundColor: Colors.white,
+                          ),
+                          onWillPopActive: false,
+                          context: context,
+                          type: AlertType.error,
+                          //image: Image.asset("img/icon_alert_sucesso.png"),
+                          title: "Não é possível acessar",
+                          desc: "Você precisa fazer uma doação nesta semana",
+                          buttons: [
+                            DialogButton(
+                              color: Colors.teal,
+                              child: Text(
+                                "OK",
+                                style: TextStyle(color: Colors.white, fontSize: 20),
+                              ),
+                              onPressed: ()  => Navigator.pop(context),
+                              width: 120,
+                            )
+                          ],
+                        ).show();
+                      }
                     },
                   ),
                   ElevatedButton(

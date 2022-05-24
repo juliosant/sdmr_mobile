@@ -97,14 +97,31 @@ class _TelaAgendarDoacaoState extends State<TelaAgendarDoacao> {
       );
 
       if (response.statusCode == 201) {
-        Navigator.pushAndRemoveUntil(
-            context, MaterialPageRoute(builder: (context)=>TelaInicialDoador()), (route) => false);
         Alert(
+          style: AlertStyle(
+            isCloseButton: false,
+            backgroundColor: Colors.white,
+          ),
+          onWillPopActive: true,
           context: context,
-          title: "Solcitado",
-          desc: "Você solicitou um agedamento",
-          type: AlertType.success,
+          //type: AlertType.success,
+          image: Image.asset("img/icon_alert_sucesso.png"),
+          title: "Soliitado",
+          desc: "Você solicitou Agendamento",
+          buttons: [
+            DialogButton(
+              color: Colors.teal,
+              child: Text(
+                "OK",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+              onPressed: () => Navigator.pushAndRemoveUntil(
+                  context, MaterialPageRoute(builder: (context)=>TelaInicialDoador()), (route) => false),
+              width: 120,
+            )
+          ],
         ).show();
+
       }
 
       else{

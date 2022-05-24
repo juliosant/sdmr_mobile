@@ -542,6 +542,7 @@ class _TelaInicialPontoColetaState extends State<TelaInicialPontoColeta> {
                         ),);*/
                     },
                   ),*/
+                  /*
                   ElevatedButton(
                     child: Text(
                       'Confirmar Agend. Doacao',
@@ -578,6 +579,7 @@ class _TelaInicialPontoColetaState extends State<TelaInicialPontoColeta> {
                         ),);*/
                     },
                   ),
+                  */
                   /*ElevatedButton(
                     child: Text(
                       'Confirmar Doação',

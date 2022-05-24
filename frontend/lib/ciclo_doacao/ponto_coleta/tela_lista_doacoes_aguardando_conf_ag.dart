@@ -82,7 +82,7 @@ class _TelaListaDoacoesAguardandoConfAgendState extends State<TelaListaDoacoesAg
       appBar: AppBar(
         title: const Center(
           child: Text(
-            'Confirmar Agendamento',
+            'Pendentes',
             style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
           ),
         ),
