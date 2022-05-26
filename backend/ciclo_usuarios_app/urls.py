@@ -23,5 +23,7 @@ urlpatterns = [
    path('cadastro_doador/', DoadorRecordView.as_view(), name='cadastro_doador'),
 
    path('ranking/', DoadorRankeadoGetCreate.as_view()),
+
+   path('buscao_ptcoleta/', PontoColetaBuscaRecordView.as_view()),
    
 ]

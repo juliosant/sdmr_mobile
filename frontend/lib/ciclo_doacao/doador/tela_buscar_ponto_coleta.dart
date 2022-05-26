@@ -26,7 +26,8 @@ class TelaBuscarPontoColeta extends StatefulWidget {
 }
 
 class _TelaBuscarPontoColetaState extends State<TelaBuscarPontoColeta> {
-  bool carregando = true;
+  bool sem_dados = true;
+  bool buscou = false;
   
   List<PontoColeta> pontosColetaEncontrados = [];
 
@@ -43,7 +44,7 @@ class _TelaBuscarPontoColetaState extends State<TelaBuscarPontoColeta> {
   void fetch_data() async{
     try{
       http.Response response = await http.get(
-        Uri.parse(kUrlUsuarios+'pontoColeta/'),
+        Uri.parse(kUrlUsuarios+'buscao_ptcoleta/?search=${tipo_materiais.join(",")}'),
         headers: {
           HttpHeaders.authorizationHeader: "TOKEN $globalToken"
         }
@@ -75,7 +76,12 @@ class _TelaBuscarPontoColetaState extends State<TelaBuscarPontoColeta> {
         pontosColetaEncontrados.add(pontoColetaAux);
       });
       setState(() {
-        carregando = false;
+        if(pontosColetaEncontrados.length > 0) {
+          sem_dados = false;
+        }
+        else{
+          sem_dados = true;
+        }
       });
 
       print(pontosColetaEncontrados.length);
@@ -95,7 +101,7 @@ class _TelaBuscarPontoColetaState extends State<TelaBuscarPontoColeta> {
 
   @override
   void initState() {
-    fetch_data();
+    //fetch_data();
     super.initState();
   }
 
@@ -143,7 +149,7 @@ class _TelaBuscarPontoColetaState extends State<TelaBuscarPontoColeta> {
                       },
                       inputDecoration: const InputDecoration(
                         border: InputBorder.none,
-                        hintText: 'Digite um material...',
+                        hintText: '...',
                         hintStyle: TextStyle(color: Colors.teal, fontSize: 25),
                       ),
                       onTagChanged: (newValue) {
@@ -174,10 +180,26 @@ class _TelaBuscarPontoColetaState extends State<TelaBuscarPontoColeta> {
                     ),*/
                   ),
                 ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: Text(
+                    'Digite material, cidade ou nome de um local e pressione espaço',
+                    style: TextStyle(
+                      color: Colors.blueGrey,
+                      fontSize: 20
+                    ),
+                  ),
+                ),
                 Container(
                   child: ElevatedButton(
                     onPressed: (){
                       print(tipo_materiais);
+                      print(tipo_materiais.join(","));
+                      buscou = true;
+                      setState(() {
+                        pontosColetaEncontrados = [];
+                      });
+                      fetch_data();
                       /*Navigator.push(context,
                           MaterialPageRoute(
                               builder: (context) => TelaAgendamento(),
@@ -206,8 +228,12 @@ class _TelaBuscarPontoColetaState extends State<TelaBuscarPontoColeta> {
                 ),
               ],
             ),
-            carregando ? Text('Sem dados')
-            : Column(
+            buscou
+                ? sem_dados
+                  ? Text(
+                          'Pontos não encontrados',
+                           style: TextStyle(fontSize: 25.0, color: Colors.grey),)
+                  : Column(
               //mainAxisAlignment: MainAxisAlignment.start,
               //crossAxisAlignment: CrossAxisAlignment.start,
               children: pontosColetaEncontrados.map((e){
@@ -221,7 +247,11 @@ class _TelaBuscarPontoColetaState extends State<TelaBuscarPontoColeta> {
 
                 );
               }).toList(),
-            ),
+            )
+
+                : Text(
+                        'Digite sua busca',
+                        style: TextStyle(fontSize: 25.0, color: Colors.grey),)
           ],
         ),
       ),

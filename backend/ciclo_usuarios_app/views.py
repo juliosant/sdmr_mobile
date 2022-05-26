@@ -1,5 +1,6 @@
+from cgitb import lookup
 from django.shortcuts import render
-from rest_framework import generics
+from rest_framework import generics, filters
 from .models import Doador, Perfil, PontoColeta
 from .serializers import * #DoadorSerializer, PerfilSerializer, PontoColetaSerializer
 
@@ -178,3 +179,11 @@ class PerfilRetornTokenId(ObtainAuthToken):
         return Response({'token': token.key, 'user': user.id, 'tipo_perfil': perfil.des_tipo_perfi})
 
 obter_token_id_perfil = PerfilRetornTokenId.as_view()
+
+
+class PontoColetaBuscaRecordView(generics.ListAPIView):
+    search_fields = ['col_materiais','des_cidade', 'des_nome_instituicao']
+    print(filters.SearchFilter)
+    filter_backends = (filters.SearchFilter,)
+    queryset = PontoColeta.objects.all()
+    serializer_class = PontoColetaSerializer
