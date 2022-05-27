@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:http/http.dart' as http;
@@ -22,7 +24,7 @@ class TelaGeralCupons extends StatefulWidget {
 
 class _TelaGeralCuponsState extends State<TelaGeralCupons> {
   double valor = 0;
-  String chave = 'CHAVEGERADA';
+  String chave = '';
   String dia = '';
   String hora = '';
 
@@ -32,6 +34,9 @@ class _TelaGeralCuponsState extends State<TelaGeralCupons> {
   int pendentes = 0;
   double pts = 0;
   double pts_usados = 0;
+
+  static const _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+  Random _rnd = Random();
 
   List<Cupom> cupons = [];
   bool carregando = true;
@@ -156,15 +161,39 @@ class _TelaGeralCuponsState extends State<TelaGeralCupons> {
       print('Deu ruim '+ response.statusCode.toString());
     }
   }
+
+  String obterStringRandomica(int length) => String.fromCharCodes(Iterable.generate(
+      length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
+
   void criar_cupom()async{
     if(pts_usados <= pts && pts_usados > 0){
       setState(() {
-        hora = DateFormat("hh:mm:ss").format(DateTime.now());
+        //hora =  DateFormat("HH:mm:ss").format(DateTime.now());
+        //--------------------------------------------
+        hora = DateFormat("HH:mm:ss").format(DateTime(
+            DateTime.now().year,
+            DateTime.now().month,
+            DateTime.now().day,
+            DateTime.now().hour+3,
+            DateTime.now().minute,
+            DateTime.now().second+30
+        ));
+        print(DateFormat("HH:mm:ss").format(DateTime(
+            DateTime.now().year,
+            DateTime.now().month,
+            DateTime.now().day,
+            DateTime.now().hour+3,
+            DateTime.now().minute+1,
+            DateTime.now().second
+        )));
+        //--------------------------------------------
         dia = DateFormat('yyyy-MM-dd').format(
             DateTime(
                 DateTime.now().year,
                 DateTime.now().month,
-                DateTime.now().day+3)).toString();
+                DateTime.now().day)).toString();
+                //DateTime.now().day+3)).toString();
+        chave = obterStringRandomica(10);
       });
 
       http.Response response = await http.post(
@@ -262,6 +291,13 @@ class _TelaGeralCuponsState extends State<TelaGeralCupons> {
     }
   }
 
+  String alterar_fuso(String hora){
+    List<String> componentes = hora.split(":");
+    componentes[0] = (int.parse(componentes[0])-3).toString();
+    String horario_novo = componentes.join(":");
+    return horario_novo;
+  }
+
   @override
   void dispose() {
     //_controller.dispose();
@@ -325,7 +361,7 @@ class _TelaGeralCuponsState extends State<TelaGeralCupons> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    child: Wrap(
+                    child: Column(
                       children: [
                         Text(
                           'Cupons disponíveis:',
@@ -381,6 +417,31 @@ class _TelaGeralCuponsState extends State<TelaGeralCupons> {
                                         GestureDetector(
                                           onTap: (){
                                             print('Verificar ${e.id}?');
+                                            Alert(
+                                              context: context,
+                                              //type: AlertType.error,
+                                              title: e.des_chave,
+                                              desc: 'Expira em: \n ${DateFormat("dd/mm/yyyy").format(DateTime.parse(e.dat_expiracao)) } às ${alterar_fuso(DateFormat("HH:mm a").format(DateTime.parse(e.dat_expiracao)))}',
+                                              style: AlertStyle(
+                                                titleStyle: TextStyle(
+                                                  fontSize: 40,
+                                                  color: Colors.green
+                                                ),
+                                                descStyle: TextStyle(color: Colors.red),
+                                                descTextAlign: TextAlign.end
+                                              ),
+                                              buttons: [
+                                                DialogButton(
+                                                  child: Text(
+                                                    "Voltar",
+                                                    style: TextStyle(color: Colors.white, fontSize: 20),
+                                                  ),
+                                                  onPressed: () => Navigator.pop(context),
+                                                  width: 120,
+                                                  color: Colors.teal,
+                                                )
+                                              ],
+                                            ).show();
                                           },
                                           child: Text(
                                             '> Código de Uso <',
@@ -407,7 +468,7 @@ class _TelaGeralCuponsState extends State<TelaGeralCupons> {
                     )
                   ),
                   Container(
-                      child: Wrap(
+                      child: Column(
                         children: [
                           Text(
                             'Cupons vencidos:',
@@ -441,6 +502,7 @@ class _TelaGeralCuponsState extends State<TelaGeralCupons> {
                                           GestureDetector(
                                             onTap: (){
                                               print('Apagar ${e.id}?');
+                                              excluir_cupom(e.id, e.num_valor);
                                             },
                                             child: Icon(
                                               Icons.highlight_remove,
@@ -487,7 +549,7 @@ class _TelaGeralCuponsState extends State<TelaGeralCupons> {
                       )
                   ),
                   Container(
-                      child: Wrap(
+                      child: Column(
                         children: [
                           Text(
                             'Cupons usados:',
@@ -498,7 +560,7 @@ class _TelaGeralCuponsState extends State<TelaGeralCupons> {
                           Wrap(
                             children: cupons.map((e)
                             {
-                            if( e.des_status == 'E' && e.cod_doador == globalIdUser){
+                            if( e.des_status == 'U' && e.cod_doador == globalIdUser){
                               return Card(
                                 color: Colors.blueGrey,
                                 child: Padding(

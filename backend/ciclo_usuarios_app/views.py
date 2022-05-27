@@ -182,7 +182,7 @@ obter_token_id_perfil = PerfilRetornTokenId.as_view()
 
 
 class PontoColetaBuscaRecordView(generics.ListAPIView):
-    search_fields = ['col_materiais','des_cidade', 'des_nome_instituicao']
+    search_fields = ['$col_materiais','des_cidade', 'des_nome_instituicao']
     print(filters.SearchFilter)
     filter_backends = (filters.SearchFilter,)
     queryset = PontoColeta.objects.all()
