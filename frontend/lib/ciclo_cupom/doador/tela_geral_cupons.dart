@@ -174,10 +174,10 @@ class _TelaGeralCuponsState extends State<TelaGeralCupons> {
             DateTime.now().year,
             DateTime.now().month,
             DateTime.now().day,
-            DateTime.now().hour+3,
+            DateTime.now().hour+3, // -3
             DateTime.now().minute,
             DateTime.now().second+30
-        ));
+        )); //MM
         print(DateFormat("HH:mm:ss").format(DateTime(
             DateTime.now().year,
             DateTime.now().month,
@@ -293,7 +293,7 @@ class _TelaGeralCuponsState extends State<TelaGeralCupons> {
 
   String alterar_fuso(String hora){
     List<String> componentes = hora.split(":");
-    componentes[0] = (int.parse(componentes[0])-3).toString();
+    componentes[0] = (int.parse(componentes[0])-3).toString(); // +0
     String horario_novo = componentes.join(":");
     return horario_novo;
   }
@@ -356,6 +356,27 @@ class _TelaGeralCuponsState extends State<TelaGeralCupons> {
                   ),
                 ),
               ),
+              GestureDetector(
+                onTap: (){
+                  setState(() {
+                    cupons = [];
+                    fetch_data();
+                  });
+                },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Icon(Icons.update, color: Colors.blueGrey,),
+                      Text(
+                          'Atualizar',
+                        style: TextStyle(
+                          color: Colors.blueGrey,
+                          fontSize: 25,
+                        ),
+                        //textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),),
 
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

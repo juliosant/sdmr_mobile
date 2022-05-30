@@ -6,19 +6,19 @@ import 'package:sdmr/constantes/constantes.dart';
 class CartaoDoacaoMateriais extends StatelessWidget {
   final int id;
   final int cod_solicitante;
-  final String nome_solicitante;
+  final String nome_beneficiario;
   final String periodo;
-  final String des_email_solicitante;
-  final String des_telefone_solicitante;
+  final String des_email_beneficiario;
+  final String des_telefone_beneficiario;
   final List<dynamic> materiais;
 
   const CartaoDoacaoMateriais({
     required this.id,
     required this.cod_solicitante,
-    required this.nome_solicitante,
+    required this.nome_beneficiario,
     required this.periodo,
-    required this.des_email_solicitante,
-    required this.des_telefone_solicitante,
+    required this.des_email_beneficiario,
+    required this.des_telefone_beneficiario,
     required this.materiais,
     Key? key,
   }) : super(key: key);
@@ -31,10 +31,10 @@ class CartaoDoacaoMateriais extends StatelessWidget {
             context, MaterialPageRoute(builder: (context)=>TelaConfirmarDoacao(
           id: id,
           cod_solicitante: cod_solicitante,
-          nome_solicitante: nome_solicitante,
+          nome_beneficiario: nome_beneficiario,
           periodo: periodo,
-          des_email_solicitante: des_email_solicitante,
-          des_telefone_solicitante: des_telefone_solicitante,
+          des_email_beneficiario: des_email_beneficiario,
+          des_telefone_beneficiario: des_telefone_beneficiario,
           materiais: materiais,
         )), (route) => false);
 
@@ -57,7 +57,7 @@ class CartaoDoacaoMateriais extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text('ID: '+ id.toString(), style: kCTituloCardPendente1,),
-              Text('Doador: '+nome_solicitante, style: kConteudoCardPendente1,),
+              Text('Local: '+nome_beneficiario, style: kConteudoCardPendente1,),
               Text('Período: '+periodo, style: kConteudoCardPendente1,)
             ],
           ),

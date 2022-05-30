@@ -23,13 +23,18 @@ class DoacaoConfirmarSerializer(serializers.ModelSerializer):
     sobrenome_solicitante = serializers.PrimaryKeyRelatedField(source='cod_solicitante.last_name' ,read_only=True, many=False) #queryset=Doador.objects.all()
     des_email_solicitante = serializers.PrimaryKeyRelatedField(source='cod_solicitante.email' ,read_only=True, many=False)
     des_telefone_solicitante = serializers.PrimaryKeyRelatedField(source='cod_solicitante.des_telefone' ,read_only=True, many=False)
+    
+    nome_beneficiario = serializers.PrimaryKeyRelatedField(source='cod_beneficiario.pontocoleta.des_nome_instituicao' , read_only=True, many=False,)
+    des_email_beneficiario = serializers.PrimaryKeyRelatedField(source='cod_beneficiario.email' ,read_only=True, many=False)
+    des_telefone_beneficiario = serializers.PrimaryKeyRelatedField(source='cod_beneficiario.des_telefone' ,read_only=True, many=False)
     #materiais = serializers.StringRelatedField(many=True, read_only=True)
     materiais = MaterialSerializer(many=True, read_only=True)
     class Meta:
         model = Doacao
-        fields = ['id', 'cod_solicitante', 'nome_solicitante', 'sobrenome_solicitante', 
-        'des_email_solicitante', 'des_telefone_solicitante',
-        'cod_beneficiario', 'dat_dia', 'des_hora', 'bool_confirmado', 
+        fields = ['id', 
+        'cod_solicitante', 'nome_solicitante', 'sobrenome_solicitante', 'des_email_solicitante', 'des_telefone_solicitante',
+        'cod_beneficiario', 'nome_beneficiario', 'des_email_beneficiario', 'des_telefone_beneficiario', 
+        'dat_dia', 'des_hora', 'bool_confirmado', 
         'des_status_atual_atendimento', 'des_status_atual_doacao', 'materiais',]
 
 

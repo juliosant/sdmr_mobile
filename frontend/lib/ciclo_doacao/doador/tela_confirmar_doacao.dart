@@ -17,19 +17,19 @@ class TelaConfirmarDoacao extends StatefulWidget {
 
   final int id;
   final int cod_solicitante;
-  final String nome_solicitante;
+  final String nome_beneficiario;
   final String periodo;
-  final String des_email_solicitante;
-  final String des_telefone_solicitante;
+  final String des_email_beneficiario;
+  final String des_telefone_beneficiario;
   final List<dynamic> materiais;
 
   const TelaConfirmarDoacao({
     required this.id,
     required this.cod_solicitante,
-    required this.nome_solicitante,
+    required this.nome_beneficiario,
     required this.periodo,
-    required this.des_email_solicitante,
-    required this.des_telefone_solicitante,
+    required this.des_email_beneficiario,
+    required this.des_telefone_beneficiario,
     required this.materiais,
     Key? key}) : super(key: key);
 
@@ -39,10 +39,10 @@ class TelaConfirmarDoacao extends StatefulWidget {
       _TelaConfirmarDoacaoState(
         id: id,
         cod_solicitante: cod_solicitante,
-        nome_solicitante: nome_solicitante,
+          nome_beneficiario: nome_beneficiario,
         periodo: periodo,
-        des_email_solicitante: des_email_solicitante,
-        des_telefone_solicitante: des_telefone_solicitante,
+        des_email_beneficiario: des_email_beneficiario,
+        des_telefone_beneficiario: des_telefone_beneficiario,
         materiais: materiais
       );
 }
@@ -70,19 +70,19 @@ class _TelaConfirmarDoacaoState extends State<TelaConfirmarDoacao> {
   ];
   final int id;
   final int cod_solicitante;
-  final String nome_solicitante;
+  final String nome_beneficiario;
   final String periodo;
-  final String des_email_solicitante;
-  final String des_telefone_solicitante;
+  final String des_email_beneficiario;
+  final String des_telefone_beneficiario;
   final List<dynamic> materiais;
 
   _TelaConfirmarDoacaoState({
     required this.id,
     required this.cod_solicitante,
-    required this.nome_solicitante,
+    required this.nome_beneficiario,
     required this.periodo,
-    required this.des_email_solicitante,
-    required this.des_telefone_solicitante,
+    required this.des_email_beneficiario,
+    required this.des_telefone_beneficiario,
     required this.materiais
   });
 
@@ -298,7 +298,7 @@ class _TelaConfirmarDoacaoState extends State<TelaConfirmarDoacao> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           Text(
-                            nome_solicitante,
+                            nome_beneficiario,
                             style: kTituloCardBusca,
                           ),
                           Column(
@@ -306,11 +306,11 @@ class _TelaConfirmarDoacaoState extends State<TelaConfirmarDoacao> {
                             //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               Text(
-                                des_email_solicitante,
+                                des_email_beneficiario,
                                 style: kConteudoCardBusca,
                               ),
                               Text(
-                                des_telefone_solicitante,
+                                des_telefone_beneficiario,
                                 style: kConteudoCardBusca,
                               ),
                               Row(

@@ -39,9 +39,12 @@ class _TelaListaDoacoesMateriais extends State<TelaListaDoacoesMateriais> {
             cod_solicitante: agendamento['cod_solicitante'],
             nome_solicitante: agendamento['nome_solicitante'],
             sobrenome_solicitante: agendamento['sobrenome_solicitante'],
-            cod_beneficiario: agendamento['cod_beneficiario'],
             des_email_solicitante: agendamento['des_email_solicitante'],
             des_telefone_solicitante: agendamento['des_telefone_solicitante'],
+            cod_beneficiario: agendamento['cod_beneficiario'],
+            nome_beneficiario: agendamento['nome_beneficiario'],
+            des_email_beneficiario: agendamento['des_email_beneficiario'],
+            des_telefone_beneficiario: agendamento['des_telefone_beneficiario'],
             dat_dia: agendamento['dat_dia'],
             des_hora: agendamento['des_hora'],
             bool_confirmado: agendamento['bool_confirmado'],
@@ -113,10 +116,10 @@ class _TelaListaDoacoesMateriais extends State<TelaListaDoacoesMateriais> {
                   return CartaoDoacaoMateriais(
                     id: e.id,
                     cod_solicitante: e.cod_solicitante,
-                    nome_solicitante: e.nome_solicitante +' '+ e.sobrenome_solicitante,
+                    nome_beneficiario: e.nome_beneficiario,
                     periodo: e.dat_dia +' '+ e.des_hora,
-                    des_email_solicitante: e.des_email_solicitante,
-                    des_telefone_solicitante: e.des_telefone_solicitante,
+                    des_email_beneficiario: e.des_email_beneficiario,
+                    des_telefone_beneficiario: e.des_telefone_beneficiario,
                     materiais: e.materiais,
 
                   );
