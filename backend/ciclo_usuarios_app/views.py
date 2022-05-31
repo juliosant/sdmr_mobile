@@ -47,7 +47,7 @@ class DoadorNomeGetCreate(generics.ListCreateAPIView):
     serializer_class = DoadorNomeSerializer
 
 class DoadorRankeadoGetCreate(generics.ListCreateAPIView):
-    queryset = Doador.objects.filter(num_pontos_gerais__gt=0).order_by('-num_pontos_gerais')
+    queryset = Doador.objects.filter(num_pontos_ranking__gt=0).order_by('-num_pontos_ranking')
     serializer_class = DoadorRankeadoSerializer
 
 
